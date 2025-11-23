@@ -1147,7 +1147,7 @@ while code_running == True:
             time.sleep(scan_interval/3)
 
             if errors_count >= 3:
-                bms_connected = False
+                code_running = False
                 print("3 errors in a row while retrieving BMS data. Looks like BMS disconnected.")
             if print_initial:
                 ha_discovery()
@@ -1177,3 +1177,4 @@ while code_running == True:
         print_initial = True
 
 client.loop_stop()
+
