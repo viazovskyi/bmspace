@@ -1129,20 +1129,26 @@ while code_running == True:
 
     if bms_connected == True:
         if mqtt_connected == True:
-
+            errors_count = 0
             success, data = bms_getAnalogData(bms,batNumber=255)
             if success != True:
                 print("Error retrieving BMS analog data: " + data)
+                errors_count +=1
             time.sleep(scan_interval/3)
             success, data = bms_getPackCapacity(bms)
             if success != True:
                 print("Error retrieving BMS pack capacity: " + data)
+                errors_count +=1
             time.sleep(scan_interval/3)
             success, data = bms_getWarnInfo(bms)
             if success != True:
                 print("Error retrieving BMS warning info: " + data)
+                errors_count +=1
             time.sleep(scan_interval/3)
 
+            if errors_count >= 3:
+                bms_connected = False
+                print("3 errors in a row while retrieving BMS data. Looks like BMS disconnected.")
             if print_initial:
                 ha_discovery()
                 
